@@ -1,0 +1,137 @@
+body {
+  padding: 60px;
+  font-family: "Open Sans", sans-serif;
+  background: black;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+input {
+  width: 500px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+button {
+  font-size: 16px;
+  padding: 5px;
+}
+
+h1, h2 {
+  display: inline-block;
+  vertical-align: middle;
+  color: #27ae60;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #AAA;
+  font-size: 32px;
+}
+
+h3 {
+  font-weight: normal;
+  color: #AAA;
+  font-size: 24px;
+}
+
+p, b {
+  color: #27ae60;
+}
+
+.add-new {
+  cursor: pointer;
+}
+
+tr {
+  cursor: pointer;
+  color: white;
+}
+
+tr.games:hover {
+  color: #27ae60;
+}
+
+.black {
+  color: black;
+}
+
+#balance {
+  color: black;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border-radius: 0px;
+  border: 1px white solid;
+}
+
+@media (max-width: 768px) {
+  .cell {
+    width: 25px !important;
+    height: 25px !important;
+  }
+  body {
+    padding: 0px;
+  }
+}
+
+.column {
+  text-align: center;
+}
+
+.left-border {
+  border-left: 1px white solid;
+}
+
+.left-border {
+  border-left: 1px white solid;
+}
+
+.top-border {
+  border-top: 1px white solid;
+}
+
+.bottom-border {
+  border-bottom: 1px white solid;
+}
+
+.pointers {
+  margin-top: 15px;
+  float: left;
+}
+
+.hint {
+  color: #666;
+}
+
+.laying {
+  background: #2980b9;
+  color: white;
+}
+
+.other-board-cell:hover{
+  background: #3498db;
+}
+
+.placed {
+  background: #bdc3c7;
+  color: white;
+}
+
+.hit {
+  background: #c0392b;
+  color: white;
+}
+
+.missed {
+  background: #27ae60;
+  color: white;
+}
+

@@ -1,0 +1,93 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<h1>Blockchain Battleship</h1>
+			<button class="btn btn-success" ng-hide="$ctrl.Battleship.name" ng-click="$ctrl.setName()">
+				Set my name
+			</button>
+			<p>{{$ctrl.Battleship.name}}</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<h2>My Games</h2>
+			<a ng-click="$ctrl.newGame()">
+				<span class="glyphicon glyphicon-plus-sign add-new"></span>
+			</a>
+			<table class="table table-hover">
+				<tr class="games">
+					<th></th>
+					<th>Game Pot</th>
+					<th>Other player</th>
+					<th>Winner</th>
+				</tr>
+				<tr class="games" style="cursor: pointer;" ng-click="$ctrl.playGame(game)" ng-repeat="game in $ctrl.myGames">
+					<td>
+						{{$index+1}}
+					</td>
+					<td>
+						{{$ctrl.Battleship.ethToWei(game.pot)}} ETH
+					</td>
+					<td>
+						{{game.player2Name}}
+					</td>
+					<td>
+						{{game.winner == game.player1 ? game.player1Name : ""}}
+						{{game.winner == game.player2 ? game.player2Name : ""}}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row" ng-show="$ctrl.joinedGames.length">
+		<div class="col-md-6 col-md-offset-3">
+			<h2>Games I've joined</h2>
+			<table class="table table-hover">
+				<tr class="games">
+					<th></th>
+					<th>Game Pot</th>
+					<th>Other player</th>
+					<th>Winner</th>
+				</tr>
+				<tr class="games" style="cursor: pointer;" ng-click="$ctrl.playGame(game)" ng-repeat="game in $ctrl.joinedGames">
+					<td>
+						{{$index+1}}
+					</td>
+					<td>
+						{{$ctrl.Battleship.ethToWei(game.pot)}} ETH
+					</td>
+					<td>
+						{{game.player1Name}}
+					</td>
+					<td>
+						{{game.winner == game.player1 ? game.player1Name : ""}}
+						{{game.winner == game.player2 ? game.player2Name : ""}}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row" ng-show="$ctrl.otherGames.length">
+		<div class="col-md-6 col-md-offset-3">
+			<h2>Other games</h2>
+			<table class="table table-hover">
+				<tr class="games">
+					<th></th>
+					<th>Game Pot</th>
+					<th>Other player</th>
+				</tr>
+				<tr class="games" style="cursor: pointer;" ng-click="$ctrl.joinGame(game)" ng-repeat="game in $ctrl.otherGames">
+					<td>
+						{{$index+1}}
+					</td>
+					<td>
+						{{$ctrl.Battleship.ethToWei(game.pot)}} ETH
+					</td>
+					<td>
+						{{game.player1Name}}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

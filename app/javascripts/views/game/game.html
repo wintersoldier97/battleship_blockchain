@@ -1,0 +1,187 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<h1>Game - {{$ctrl.data.player1Name}} vs {{$ctrl.data.player2Name}}</h1>
+			<p ng-show="$ctrl.loaded">
+				State: {{$ctrl.currentState}}
+			</p>
+			<p ng-show="$ctrl.loaded && $ctrl.data.gameState.toNumber() == 2">
+				Turn: {{$ctrl.myTurn ? "Mine" : "Other player"}}
+			</p>
+		</div>
+		<div class="col-md-6" ng-show="$ctrl.canWin && $ctrl.data.gameState.toNumber() == 2">
+			<button class="btn btn-success" ng-click="$ctrl.winTheGame()">
+				You can win! Press here to win.
+			</button>
+		</div>
+		<div  class="col-md-6" ng-show="$ctrl.data.gameState.toNumber() == 3">
+			<h2>Winner: {{$ctrl.Battleship.data.account == $ctrl.data.winner ? "You!" : "Not you..."}}</h2>
+			<button 
+				class="btn btn-primary"
+				ng-click="$ctrl.withdrawWinnings()"
+				ng-disabled="$ctrl.withdrawing"
+				ng-show="$ctrl.Battleship.data.account == $ctrl.data.winner && $ctrl.data.availablePot.toNumber()">
+				Withdraw winnings
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<h3>My board</h3>
+			<p ng-hide="$ctrl.board">
+				Loading...
+			</p>
+			<table ng-show="$ctrl.board">
+				<th></th>
+				<th 
+					class="column left-border" 
+					ng-repeat="row in $ctrl.board track by $index">
+					<b>{{$ctrl.columns[$index]}}</b>
+				</th>
+				<tr ng-repeat="row in $ctrl.board track by $index">
+					<td class="top-border">
+						<b>{{$index+1}}</b>
+					</td>
+					<td ng-repeat="ele in row track by $index">
+						<button 
+							class="btn cell" 
+							ng-disabled="$ctrl.data.gameState.toNumber() >= 2"
+							ng-click="$ctrl.layPiece($index,$parent.$index)"
+							ng-class='{
+								"laying": $ctrl.laying.x == $index && $ctrl.laying.y == $parent.$index,
+								"other-board-cell": $ctrl.data.gameState.toNumber() < 2,
+								"placed": ele > 0,
+								"hit": ele < 0,
+								"missed": ele > $ctrl.maxBoatLength,
+							}'>
+							<span ng-show="ele != 0 && ele <= $ctrl.maxBoatLength">
+								{{ele < 0 ? ele * -1 : ele}}
+							</span>
+						</button>
+					</td>
+				</tr>
+			</table>
+			<button ng-show="$ctrl.loaded 
+					&& $ctrl.data.gameState.toNumber() == 1 
+					&& $ctrl.numberOfShipsPlaced($ctrl.board) == $ctrl.maxBoatLength + 1 - $ctrl.minBoatLength"
+				class="btn btn-success"
+				style="margin-top: 50px;"
+				ng-click="$ctrl.startGame()">
+				Start game
+			</button>
+
+			<table ng-show="$ctrl.showHelp1" class="table" style="margin-top: 50px;">
+				<tr>
+					<th>Block</th>
+					<th>What it means</th>
+				</tr>
+				<tr>
+					<td>
+						<button 
+							class="pointers cell laying"
+							>
+						</button>
+					</td>
+					<td> You're laying your boat down</td>
+				</tr>
+				<tr>
+					<td>
+						<button class="btn cell placed">
+							<span>
+								2
+							</span>
+						</button>
+					</td>
+					<td> Your boat with the length it is inside</td>
+				</tr>
+				<tr>
+					<td>
+						<button 
+							class="pointers cell hit"
+							>
+						</button>
+					</td>
+					<td> They hit your boat</td>
+				</tr>
+				<tr>
+					<td>
+						<button 
+							class="pointers cell missed"
+							>
+						</button>
+					</td>
+					<td> They missed your boat</td>
+				</tr>
+			</table>
+			<button ng-click="$ctrl.showHelp1 = !$ctrl.showHelp1" class="btn btn-success" style="margin-top: 50px;">
+				{{$ctrl.showHelp1 ? "Hide help": "Show help"}}
+			</button>
+		</div>
+		<div class="col-md-6" ng-show="$ctrl.data.gameState.toNumber() >= 2">
+			<h3>Other players board</h3>
+			<p ng-hide="$ctrl.otherBoard">
+				Loading...
+			</p>
+			<table ng-show="$ctrl.otherBoard">
+				<th></th>
+				<th 
+					class="column left-border"
+					ng-repeat="row in $ctrl.otherBoard track by $index"
+					>
+					<b>{{$ctrl.columns[$index]}}</b>
+				</th>
+				<tr ng-repeat="row in $ctrl.otherBoard track by $index">
+					<td class="top-border">
+						<b>{{$index+1}}</b>
+					</td>
+					<td ng-repeat="ele in row track by $index">
+						<button 
+							style="width: 40px; height: 40px;" 
+							class="btn cell" 
+							ng-disabled="$ctrl.data.gameState.toNumber() > 2"
+							ng-click="$ctrl.makeMove($index,$parent.$index)"
+							ng-class='{
+								"missed": ele < 0,
+								"hit": ele > $ctrl.maxBoatLength,
+								"other-board-cell": !$ctrl.moving && $ctrl.myTurn,
+								"laying": $ctrl.moving && $ctrl.x == $index && $ctrl.y == $parent.$index
+							}'>
+							<span ng-show="ele < 0">
+								{{ele * -1}}
+							</span>
+						</button>
+					</td>
+				</tr>
+			</table>
+
+			<table ng-show="$ctrl.showHelp2" class="table" style="margin-top: 50px;">
+				<tr>
+					<th>Block</th>
+					<th>What it means</th>
+				</tr>
+				<tr>
+					<td>
+						<button 
+							class="pointers cell missed"
+							>
+							2
+						</button>
+					</td>
+					<td> You hit their boat with the length of the boat inside</td>
+				</tr>
+				<tr>
+					<td>
+						<button 
+							class="pointers cell hit"
+							>
+						</button>
+					</td>
+					<td> You missed their boat</td>
+				</tr>
+			</table>
+			<button ng-click="$ctrl.showHelp2 = !$ctrl.showHelp2" class="btn btn-success" style="margin-top: 50px;">
+				{{$ctrl.showHelp2 ? "Hide help": "Show help"}}
+			</button>
+		</div>
+	</div>
+</div>
