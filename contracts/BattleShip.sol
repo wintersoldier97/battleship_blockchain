@@ -39,7 +39,7 @@ contract BattleShip {
     event HitBattleShip(bytes32 gameId, address currentPlayer, uint8 x, uint8 y, int8 pieceHit);
     event WonChallenged(bytes32 gameId, address player);
     event GameEnded(bytes32 gameId, address winner);
-    
+
     event WinningsWithdrawn(bytes32 gameId, address player);
     event WithdrawFailed(bytes32 gameId, address player, string reason);
 
@@ -148,8 +148,9 @@ contract BattleShip {
         emit StateChanged(gameId,GameState.SettingUp,"SettingUp");
     }
 
-    function showBoard(bytes32 gameId) isPlayer(gameId) public returns(int8[10][10] memory board) {
+    function showBoard(bytes32 gameId) public isPlayer(gameId) returns(int8[10][10] memory board) {
         return games[gameId].playerGrids[msg.sender];
+        
     }
 
     function showOtherPlayerBoard(bytes32 gameId) isPlayer(gameId) public returns(int8[10][10] memory){
@@ -167,9 +168,9 @@ contract BattleShip {
         }
         return otherPlayerBoard;
     }
-    
+
     function placeShip(bytes32 gameId, uint8 startX, uint8 endX, uint8 startY, uint8 endY) public isPlayer(gameId) isState(gameId,GameState.SettingUp) {
-        
+
         require(startX == endX || startY == endY);
         require(startX < endX || startY < endY);
         require(startX  < 10 && startX  >= 0 &&
@@ -179,7 +180,7 @@ contract BattleShip {
         for(uint8 x = startX; x <= endX; x++) {
             for(uint8 y = startY; y <= endY; y++) {
                 require(games[gameId].playerGrids[msg.sender][x][y] == 0);
-            }   
+            }
         }
         uint8 boatLength = 1;
         if(startX == endX) {
@@ -197,7 +198,7 @@ contract BattleShip {
         for(uint8 x = startX; x <= endX; x++) {
             for(uint8 y = startY; y <= endY; y++) {
                 games[gameId].playerGrids[msg.sender][x][y] = int8(boatLength);
-            }   
+            }
         }
 
         emit ShipPlaced(gameId, msg.sender, startX, endX, startY, endY);
@@ -243,7 +244,7 @@ contract BattleShip {
                 if(otherPlayerGrid[i][j] < 0){
                     numberHit += 1;
                 }
-            }    
+            }
         }
         if(numberHit >= requiredToWin){
             games[gameId].gameState = GameState.Finished;
@@ -270,11 +271,5 @@ contract BattleShip {
                 emit WithdrawFailed(gameId,msg.sender,'No more funds in the contract for this game');
             }
         }
-
     }
-    
-    /* This unnamed function is called whenever someone tries to send ether to the contract */
-    // function () {
-    //     throw; // Prevents accidental sending of ether
-    // }
 }

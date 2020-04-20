@@ -1,15 +1,14 @@
 {
   "name": "truffle-init-webpack",
-  "version": "0.0.1",
-  "description": "Frontend example using truffle v3",
+  "version": "1.0.0",
+  "description": "Blockchain Battleship",
   "scripts": {
     "lint": "eslint ./",
     "build": "webpack",
     "dev": "webpack-dev-server --history-api-fallback --inline --progress --debug --devtool source-map --output-pathinfo"
   },
-  "author": "Douglas von Kohorn",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "@babel/register": "^7.7.4",
     "babel-cli": "^6.22.2",
     "babel-core": "^6.25.0",
@@ -35,11 +34,10 @@
     "ngtemplate-loader": "^2.0.1",
     "style-loader": "^0.13.1",
     "truffle-contract": "^1.1.6",
-    "web3": "git://github.com/ethereum/web3.js.git#develop",
-    "webpack": "^2.7.0",
-    "webpack-dev-server": "^2.3.0"
-  },
-  "dependencies": {
+    "web3": "^1.2.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
     "@uirouter/angularjs": "^1.0.4",
     "angular": "^1.6.4",
     "babel": "^6.23.0"
